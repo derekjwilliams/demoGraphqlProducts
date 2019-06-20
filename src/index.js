@@ -3,6 +3,7 @@ import { render } from "react-dom";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider, Query } from "react-apollo";
 import gql from "graphql-tag";
+import { Weather } from "./weather";
 
 const client = new ApolloClient({
   uri: "http://localhost:5000/graphql"
@@ -42,6 +43,8 @@ const variantStyle = {
   boxShadow: '1px 1px 6px rgba(0, 0, 0, 0.4)',
   backgroundColor: '#fcfbf8'
 }
+// const [sendMessage, lastMessage, readyState] = useWebSocket('wss://echo.websocket.org', { onOpen: console.log });
+
 
 const Products = () => (
   <Query
@@ -78,6 +81,7 @@ const Products = () => (
       }
     `}
   >
+  
   {({ loading, error, data }) => {
     if (loading) {
       return <p>Loading...</p>
@@ -153,6 +157,7 @@ const Variants = (variantsByProductGuid) => {
 
 const App = () => (
   <ApolloProvider client={client}>
+    <Weather />
     <Products/>
   </ApolloProvider>
 );
