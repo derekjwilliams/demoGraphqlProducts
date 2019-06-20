@@ -27,6 +27,10 @@ const footerStyle = {
   fontSize: '0.8rem',
   marginTop: '0.8rem'
 }
+const productImagePlaceholderStyle = {
+  objectFit: "cover",
+  height: "150px"
+}
 const manufacturerNameStyle = {
   minHeight: '40px'
 }
@@ -99,7 +103,7 @@ const Products = () => (
           <h3 style={manufacturerNameStyle}>
             {manufacturerName ? `Made By ${manufacturerName}`: ''}
           </h3>
-          <img width="100%" src={'https://labs.jensimmons.com/2017/media/01-001/brooklynmuseum-o44489i000-35.867_reference_SL1.jpg'}/>
+          <img style={productImagePlaceholderStyle} width="100%" src={'https://labs.jensimmons.com/2017/media/01-001/brooklynmuseum-o44489i000-35.867_reference_SL1.jpg'}/>
           <p>
             {description}
           </p>
