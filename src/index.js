@@ -8,51 +8,54 @@ const client = new ApolloClient({
   uri: "http://localhost:5000/graphql"
 });
 
-const productsStyle = {
+const productStyle = {
+  display: "grid",
   fontFamily: 'Lucida Grande',
   fontSize: '14px',
-  backgroundColor: '#cdeaca',
+  backgroundColor: '#f6f3ea',
+  boxShadow: '1px 2px 8px rgba(0, 0, 0, 0.4)',
   padding: '8px',
   margin: '8px',
   background: 'https://my.sit.nutrienagsolutions.com/static/media/registrationBackground-min.d6eb8897.jpg'
+}
+const productsListStyle = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(380px, 1fr))"
 }
 const footerStyle = {
   fontStyle: 'italic',
   fontSize: '0.8rem',
   marginTop: '0.8rem'
 }
-const termsStyle = {
-  float: 'left',
-  width: '30%',
-  textAlign: 'right',
-  padding: '.25em',
-  clear: 'left',
+const manufacturerNameStyle = {
+  minHeight: '40px'
 }
+
 const variantStyle = {
   margin: '1rem',
   padding: '1rem',
-  color: '#eeeeee',
-  backgroundColor: '#657763'
+  color: '#111',
+  boxShadow: '1px 1px 6px rgba(0, 0, 0, 0.4)',
+  backgroundColor: '#fcfbf8'
 }
-
 
 const Products = () => (
   <Query
     query={gql`
       {
-        allProducts(first: 100) {
+        allProducts(first: 100, filter:{logoMobile: {isNull:false}}) {
           nodes {
             guid
             name
             description
             enabled
-            logo
+            logoMobile
             shortDescription
             arsKey
             manufacturerName
             commonName
             associatedCountry
-            variantsByProductGuid {
+            variantsByProductGuid (first: 3) {
               nodes {
                 arsKey
                 guid
@@ -78,31 +81,34 @@ const Products = () => (
     if (error) {
       return <p>Error, Oh Noes, check the console</p>
     }
-    return data.allProducts.nodes.map(({ 
+    const products = data.allProducts.nodes.map(({ 
       guid, 
       name,
       description,
       manufacturerName,
       variantsByProductGuid,
       commonName,
-      associatedCountry
+      associatedCountry,
+      logoMobile
     }) => (
-      <div key={guid} style={productsStyle}>
-        <section>
+      <div key={guid} style={productStyle}>
+        <div>
           <h2>
             {name}{commonName ? `- ${commonName}`: ''}({associatedCountry})
           </h2>
-          <h3>
+          <h3 style={manufacturerNameStyle}>
             {manufacturerName ? `Made By ${manufacturerName}`: ''}
           </h3>
+          <img width="100%" src={'https://labs.jensimmons.com/2017/media/01-001/brooklynmuseum-o44489i000-35.867_reference_SL1.jpg'}/>
           <p>
             {description}
           </p>
           <Variants {...variantsByProductGuid}/>
             <footer style={footerStyle}>GUID: {guid}</footer>
-        </section>
+        </div>
       </div>
     ));
+    return <div style={productsListStyle}>{products}</div>
   }}
   </Query>
 );
@@ -143,7 +149,7 @@ const Variants = (variantsByProductGuid) => {
 
 const App = () => (
   <ApolloProvider client={client}>
-    <Products />
+    <Products/>
   </ApolloProvider>
 );
 
