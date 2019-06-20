@@ -43,7 +43,7 @@ const Products = () => (
   <Query
     query={gql`
       {
-        allProducts(first: 100, filter:{logoMobile: {isNull:false}}) {
+        allProducts(first: 100, filter:{enabled: {equalTo:true}}) {
           nodes {
             guid
             name
