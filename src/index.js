@@ -6,7 +6,7 @@ import gql from "graphql-tag";
 import { Weather } from "./weather";
 
 const client = new ApolloClient({
-  uri: "http://localhost:5000/graphql"
+  uri: "http://localhost:5002/graphql"
 });
 
 const productStyle = {
